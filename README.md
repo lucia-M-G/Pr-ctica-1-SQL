@@ -30,9 +30,9 @@
 ## 👥 **Autors**  
 
 - **Joan Navío**
-- **Jordi**
+- **Jordi Fernández**
 - **Lucía Martínez** 
-- Assignatura: Basese de Dades | 0484
+- Assignatura: Bases de Dades | 0484
 - Any acadèmic: 2024-2025
 
 ---
