@@ -3,41 +3,50 @@
 -- Pràctica_SQL_Part2_v1.1
 
 -- 1) Quants estadis hi ha?
-SELECT COUNT(*) FROM arena;
+SELECT PF.startcontract AS Year, 
+       ROUND(AVG(PF.Salary), 2) AS AvgSalary
+FROM player_franchise PF
+GROUP BY PF.startcontract
+ORDER BY PF.startcontract;
 
 -- 2) Obté el nom i cognom de l'entrenador principal de cada franquícia. Quin és el cognom de l'entrenador de Utah Jazz?
-SELECT COUNT(*) AS NombreEstadis FROM arena;
+SELECT P.Surname
+FROM franchise F
+JOIN headcoach H ON F.IDCardCoach = H.IDCard
+JOIN person P ON H.IDCard = P.IDCard
+WHERE F.Name = 'Utah Jazz';
 
 -- 3) Troba el nom de la franquícia amb el pressupost més gran.
-SELECT P.Surname
-FROM franchise F
-JOIN headcoach H ON F.IDCardCoach = H.IDCard
-JOIN person P ON H.IDCard = P.IDCard
-WHERE F.Name = 'Utah Jazz';
+SELECT Budget
+	FROM franchise
+	ORDER BY Budget DESC
+	LIMIT 1;
 
 -- 4) Llista les arenes (noms i ciutats) de les franquícies de la conferència oest. Quin és el nom de la 5a ciutat?
-SELECT P.Surname
-FROM franchise F
-JOIN headcoach H ON F.IDCardCoach = H.IDCard
-JOIN person P ON H.IDCard = P.IDCard
-WHERE F.Name = 'Utah Jazz';
+SELECT SUBSTRING_INDEX(A.City, ',', 1) AS CityName
+	 FROM arena A
+	 JOIN franchise F ON A.Name = F.ArenaName
+	 WHERE F.ConferenceName = 'Western Conference'
+	 ORDER BY A.City
+	 LIMIT 1 OFFSET 4;
 
 -- 5) Llista els noms dels jugadors que han estat seleccionats en el draft en primera, segona o tercera posició al draft
 -- del 2020. Ordena pel cognom i nom del jugador (Z-A). Quin és el nom del jugador mostrat en la primera fila?
-SELECT A.city
-		FROM arena A
-		JOIN franchise F ON A.Name = F.ArenaName
-		WHERE F.ConferenceName = 'Western Conference'
-		ORDER BY A.City
-		LIMIT 1 OFFSET 4;
+SELECT pe.Name
+		 FROM person pe
+		 JOIN player pl ON pe.IDCard = pl.IDCard
+		 JOIN draft_player_franchise dpf ON pl.IDCard = dpf.IDCardPlayer
+		 WHERE dpf.DraftYear = 2020 AND dpf.Position IN (1, 2, 3)
+		 ORDER BY pe.Surname DESC, pe.Name DESC
+		 LIMIT 1;
 
 -- 6) Recupera els noms dels jugadors que tenen una data de naixement anterior al març de 1980. Quin és el nom del jugador de cognom
 -- Lue que apareix als primers resultats?
-SELECT P.Surname
-FROM franchise F
-JOIN headcoach H ON F.IDCardCoach = H.IDCard
-JOIN person P ON H.IDCard = P.IDCard
-WHERE F.Name = 'Utah Jazz';
+SELECT Pe.Name
+	FROM person Pe
+	JOIN player Pl ON Pl.IDCard = Pe.IDCard 
+	WHERE Pe.Surname = 'Lue'
+		AND Pe.BirthDate < '1980-03-01';
 
 -- 7) Per cada arena, digues el nombre de seients VIP que hi ha. Quants en te el Madison Square Garden?
 
