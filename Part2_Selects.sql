@@ -269,3 +269,16 @@ FROM (
     HAVING COUNT(DISTINCT PF.FranchiseName) >= 2
        AND COUNT(DISTINCT NP.Year) > 1
 ) AS EligiblePlayers;
+
+-- 31) Quina és la mitja del salary dels jugadors per any? (Agafa l'any que han començat els seus contractes per fer les mitjes i arrodoneix
+-- el resultat a 2 decimals). Quin és el valor resultant dels decimals de l'any 2009?
+SELECT ROUND(AVG(PF.Salary), 2) AS AvgSalary
+			FROM player_franchise PF
+			WHERE YEAR(PF.StartContract) = 2009;
+
+-- 32) Hi ha alguna especialitat que no estgui en algun equip? Fes el SELECT que ho demostri. Escriu a la taula de respostes el nom del equip
+-- al que li faltin més especialitats.
+SELECT a.FranchiseName, COUNT(DISTINCT a.Especiality)
+			FROM assistantcoach a 
+			GROUP BY a.FranchiseName
+			ORDER BY COUNT(DISTINCT a.Especiality);
